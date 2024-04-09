@@ -10,19 +10,24 @@ const resList = reactive(RES_LIST)
 
 const progressNumber = computed(() => {
   const length = resList.length
-  if (!length) return 1
+  if (!length) return 0
   const step = 1 / length
+
+  // const nums = resList.map(t => t.progress)
   const progress = resList.reduce((acc, cur) => {
-    const p = MathUtils.clamp(cur.progress, 0, 1) / 1
-    return acc + p * step
+    const p = MathUtils.clamp(cur.progress, 0, 1)
+    const num = p * step
+    // console.log(p, num)
+    return acc + num
   }, 0)
 
+  // console.log(progress, 'progress')
   return MathUtils.clamp(progress, 0, 1)
 })
 
-watchEffect(() => {
-  console.log(progressNumber.value)
-})
+// watchEffect(() => {
+//   console.log(progressNumber.value)
+// })
 
 useMounted(() => {
   resList.forEach(res => {
@@ -30,13 +35,13 @@ useMounted(() => {
 
     if (type === 'gltf') {
       toLoadGltfFile(res.path, xhr => {
-        console.log(res.name, xhr.loaded, xhr.total)
-        res.progress = xhr.loaded / xhr.total
+        res.progress = Math.min(xhr.loaded / xhr.total, 0.99)
       })
         .then(gltf => {
+          return setItem(res.name, gltf)
+        })
+        .then(() => {
           res.progress = 1
-          // console.log(gltf)
-          setItem(res.name, gltf)
         })
         .catch(err => {
           console.error(res)

@@ -28,7 +28,7 @@ export const createThreeEnvironment = (dom: HTMLDivElement) => {
   renderer.setPixelRatio(pixelRatio)
 
   const camera = new PerspectiveCamera(60, width / height, 0.1, 2000)
-  camera.position.set(0, 0, 100)
+  camera.position.set(0, 0, 10)
 
   const cameraControls = new CameraControls(camera, dom)
 

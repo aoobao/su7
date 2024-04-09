@@ -4,12 +4,14 @@ export const setItem = (name: string, value: unknown) => {
   return Promise.resolve()
 }
 
-export const getItem = (name: string) => {
+export const getItem = <T>(name: string): T | undefined => {
   if (map.has(name)) {
     const target = map.get(name)
-    return Promise.resolve(target)
+    return target as T
+    // return Promise.resolve<T>(target)
   } else {
-    return Promise.reject(new Error('not found'))
+    // return Promise.reject(new Error('not found'))
+    return undefined
   }
 }
 

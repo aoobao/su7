@@ -35,6 +35,8 @@ export const useInitThreeStage = defineStore('initThreeStage', () => {
 
     const e = createThreeEnvironment(dom)
     env = e
+    // just a test
+    window.env = env
 
     const resetSize = () => {
       const { clientWidth, clientHeight } = dom
