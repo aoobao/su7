@@ -19,3 +19,16 @@ export const removeItem = (name: string) => {
   map.delete(name)
   return Promise.resolve()
 }
+
+export const getItemList = (...names: string[]) => {
+  const resList = names.map(name => {
+    const val = getItem(name)
+    if (val === undefined) {
+      throw new Error('not found by name:' + name)
+    }
+
+    return val
+  })
+
+  return resList
+}

@@ -6,19 +6,22 @@ import LightManager from '@/three-components/LightManager.vue'
 import HelperView from '@/three-components/HelperView.vue'
 import CarSu7 from '@/three-components/CarSu7.vue'
 import StartRoom from '@/three-components/StartRoom.vue'
+import LoadManager from './LoadManager.vue'
 </script>
 <template>
   <div class="main-view">
     <ThreeStage>
-      <RenderContext :ftp="60">
-        <HelperView />
+      <LoadManager>
+        <RenderContext :ftp="60">
+          <HelperView />
 
-        <LightManager>
-          <!-- <TestCube /> -->
-          <StartRoom></StartRoom>
-          <CarSu7></CarSu7>
-        </LightManager>
-      </RenderContext>
+          <LightManager>
+            <!-- <TestCube /> -->
+            <StartRoom></StartRoom>
+            <CarSu7></CarSu7>
+          </LightManager>
+        </RenderContext>
+      </LoadManager>
     </ThreeStage>
   </div>
 </template>

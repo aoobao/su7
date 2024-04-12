@@ -1,6 +1,7 @@
-import { BufferGeometry, Line, Material, Mesh, Object3D, Points, Sprite } from 'three'
-import { GLTFLoader } from './GLTFLoader.js'
+import { BufferGeometry, Line, Material, Mesh, Object3D, Points, Sprite, Texture, TextureLoader } from 'three'
+import { GLTF, GLTFLoader } from './GLTFLoader.js'
 import { MeshoptDecoder } from './meshopt_decoder.module.js'
+import { RGBELoader } from 'three/examples/jsm/Addons.js'
 /**
  * 销毁
  * @param object 3d对象
@@ -73,7 +74,7 @@ export function toLoadGltfFile(url: string, onProgress?: (event: ProgressEvent<E
   const loader = new GLTFLoader()
   loader.setMeshoptDecoder(MeshoptDecoder)
 
-  return new Promise((resolve, reject) => {
+  return new Promise<GLTF>((resolve, reject) => {
     loader.load(
       url,
       gltf => {
@@ -82,6 +83,42 @@ export function toLoadGltfFile(url: string, onProgress?: (event: ProgressEvent<E
       onProgress,
       err => {
         console.error(err)
+        reject(err)
+      }
+    )
+  })
+}
+
+export function toLoadTexture(url: string) {
+  const loader = new TextureLoader()
+
+  return new Promise<Texture>((resolve, reject) => {
+    loader.load(
+      url,
+      texture => {
+        // texture.encoding
+        // console.log(texture)
+        resolve(texture)
+      },
+      undefined,
+      err => {
+        console.error(err)
+        reject(err)
+      }
+    )
+  })
+}
+
+export function toLoadHdr(url: string, onProgress?: (event: ProgressEvent<EventTarget>) => void) {
+  const loader = new RGBELoader()
+  return new Promise<{ texture: Texture; textureData: object }>((resolve, reject) => {
+    loader.load(
+      url,
+      (texture, textureData) => {
+        resolve({ texture, textureData })
+      },
+      onProgress,
+      err => {
         reject(err)
       }
     )

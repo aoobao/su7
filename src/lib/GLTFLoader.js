@@ -523,7 +523,8 @@ class GLTFMaterialsUnlitExtension {
         const array = metallicRoughness.baseColorFactor
 
         // materialParams.color.setRGB(...array, LinearSRGBColorSpace)
-        materialParams.color.fromArray(array)
+        // materialParams.color.fromArray(array)
+        materialParams.color.setRGB(array[0], array[1], array[2], LinearSRGBColorSpace)
         materialParams.opacity = array[3]
       }
 

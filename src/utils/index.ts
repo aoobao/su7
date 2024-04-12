@@ -81,3 +81,8 @@ export const useMounted = (fn: () => Func | void) => {
 export const useBeforeMount = (fn: () => Func | void) => {
   useInit(fn, { beforeMounted: true })
 }
+
+export const errorMessage = (str: string) => {
+  alert(str)
+  return Promise.resolve()
+}

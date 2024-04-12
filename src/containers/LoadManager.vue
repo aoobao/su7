@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { checkNever, useMounted } from '../utils'
+import { checkNever, useMounted, errorMessage } from '../utils'
 import { reactive, computed, watchEffect } from 'vue'
-import { MathUtils } from 'three'
-import { toLoadGltfFile } from '../lib/three-common'
+import { MathUtils, PMREMGenerator } from 'three'
+import { toLoadGltfFile, toLoadTexture, toLoadHdr } from '../lib/three-common'
 import { setItem } from '../utils/res'
 import { RES_LIST } from '../constants'
-
+import { getThreeEnv } from '@/store/three'
+import LoadAnimation from '../components/LoadAnimation.vue'
+const env = getThreeEnv()
 const resList = reactive(RES_LIST)
 
 const progressNumber = computed(() => {
@@ -25,11 +27,8 @@ const progressNumber = computed(() => {
   return MathUtils.clamp(progress, 0, 1)
 })
 
-// watchEffect(() => {
-//   console.log(progressNumber.value)
-// })
-
 useMounted(() => {
+  const r = new PMREMGenerator(env.renderer)
   resList.forEach(res => {
     const type = res.type
 
@@ -45,7 +44,49 @@ useMounted(() => {
         })
         .catch(err => {
           console.error(res)
-          alert(err.message)
+          errorMessage(err.message)
+        })
+    } else if (type === 'image') {
+      const ext = res.ext
+      toLoadTexture(res.path)
+        .then(texture => {
+          // texture.colorSpace
+
+          if (ext) {
+            for (const key in ext) {
+              if (key in texture) {
+                // @ts-ignore
+                texture[key] = ext[key]
+              } else {
+                console.warn('property not exist:' + key)
+              }
+            }
+          }
+
+          return setItem(res.name, texture)
+        })
+        .then(() => {
+          res.progress = 1
+        })
+        .catch(err => {
+          console.error(res)
+          errorMessage(err.message)
+        })
+    } else if (type === 'hdr') {
+      toLoadHdr(res.path, xhr => {
+        res.progress = Math.min(xhr.loaded / xhr.total, 0.99)
+      })
+        .then(data => {
+          // console.log(data)
+          const texture = r.fromEquirectangular(data.texture).texture
+          return setItem(res.name, texture)
+        })
+        .then(() => {
+          res.progress = 1
+        })
+        .catch(err => {
+          console.error(err)
+          errorMessage(err.message)
         })
     } else {
       checkNever(type)
@@ -54,16 +95,6 @@ useMounted(() => {
 })
 </script>
 <template>
-  <div class="loader" v-if="progressNumber !== 1">
-    {{ progressNumber }}
-  </div>
+  <LoadAnimation v-if="progressNumber !== 1" :progressNumber="progressNumber" />
   <slot v-else> </slot>
 </template>
-
-<style lang="scss" scoped>
-.loader {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-</style>

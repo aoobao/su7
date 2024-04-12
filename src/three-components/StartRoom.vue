@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBeforeMount } from '../utils/index'
 import { getThreeEnv } from '../store/three'
-import { getItem } from '../utils/res'
+import { getItem, getItemList } from '../utils/res'
 import { GLTF } from '../lib/GLTFLoader'
 // import { destroyObject3D } from '../lib/three-common'
 const env = getThreeEnv()
@@ -9,8 +9,11 @@ const env = getThreeEnv()
 useBeforeMount(() => {
   const gltf = getItem<GLTF>('sm_startroom')
   if (!gltf) return
-  // env.scene.add(gltf.scene)
-  // console.log(gltf)
+
+  const resList = getItemList('t_startroom_ao', 't_startroom_light', 't_floor_normal', 't_floor_roughness')
+
+  console.log(gltf, resList)
+
   env.scene.add(gltf.scene)
 
   return () => {
