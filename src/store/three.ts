@@ -1,4 +1,4 @@
-import { IThreeEnvironment, createThreeEnvironment } from '@/utils'
+import { IThreeEnvironment, createThreeEnvironment, useBeforeMount } from '@/utils'
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
 
@@ -53,12 +53,11 @@ export const useInitThreeStage = defineStore('initThreeStage', () => {
   }
 
   const getEnv = () => {
-    if (!env) throw new Error('env is not created')
+    // if (!env) throw new Error('env is not created')
     return env
   }
 
   return {
-    // env: env,
     isCreated,
     getEnv,
     destroy,
@@ -66,10 +65,26 @@ export const useInitThreeStage = defineStore('initThreeStage', () => {
   }
 })
 
+type Func = () => void
+
+export const useThreeRender = (initFunc: (env: IThreeEnvironment) => Func | void) => {
+  const stage = useInitThreeStage()
+
+  useBeforeMount(() => {
+    // if (!stage._env) return
+    const env = stage.getEnv()
+    if (!env) return
+
+    return initFunc(env)
+  })
+}
+
 export const getThreeEnv = () => {
   const stage = useInitThreeStage()
 
   const env = stage.getEnv()
+
+  if (!env) throw new Error('env is not created')
 
   return env
 }

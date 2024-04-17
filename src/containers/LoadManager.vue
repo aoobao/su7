@@ -78,8 +78,8 @@ useMounted(() => {
       })
         .then(data => {
           // console.log(data)
-          const texture = r.fromEquirectangular(data.texture).texture
-          return setItem(res.name, texture)
+          // const texture = r.fromEquirectangular(data.texture).texture
+          return setItem(res.name, data.texture)
         })
         .then(() => {
           res.progress = 1

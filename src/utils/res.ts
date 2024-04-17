@@ -23,7 +23,7 @@ export const removeItem = (name: string) => {
 export const getItemList = (...names: string[]) => {
   const resList = names.map(name => {
     const val = getItem(name)
-    if (val === undefined) {
+    if (!val) {
       throw new Error('not found by name:' + name)
     }
 

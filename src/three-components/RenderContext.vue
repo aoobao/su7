@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { useBeforeMount } from '@/utils'
-import { getThreeEnv } from '../store/three'
+import { getThreeEnv } from '@/store/three'
+import { initRenderEvent } from '@/store/update'
 import { Clock } from 'three'
 import { update } from '@tweenjs/tween.js'
+import { createSubscribe } from '@/utils/subscribe'
+import { IRenderProps } from '@/types'
 const props = defineProps({
   ftp: { type: Number, default: 60 }
 })
+
+const { registerBefore, registerAfter } = initRenderEvent()
+
 useBeforeMount(() => {
   // console.log('render init')
   const env = getThreeEnv()
@@ -25,7 +31,11 @@ useBeforeMount(() => {
 
     update(delta) // tween.js
 
+    registerBefore({ timer, delta })
+
     env.renderer.render(env.scene, env.camera)
+
+    registerAfter({ timer, delta })
   }
 
   tick = requestAnimationFrame(render)

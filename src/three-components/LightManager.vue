@@ -7,13 +7,13 @@ import { destroyObject3D } from '../lib/three-common'
 const env = getThreeEnv()
 
 useBeforeMount(() => {
-  const light = new AmbientLight(0x404040, 0.5)
+  const light = new AmbientLight(0x404040, 0.1)
 
-  const directionalLight = new DirectionalLight(0xffffff, 0.8)
+  // const directionalLight = new DirectionalLight(0xffffff, 0.8)
 
-  directionalLight.position.set(0, 30, 0)
+  // directionalLight.position.set(0, 30, 0)
 
-  env.scene.add(light, directionalLight)
+  env.scene.add(light)
 
   return () => {
     env.scene.remove(light)
