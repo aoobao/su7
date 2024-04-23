@@ -11,8 +11,10 @@
   "dependencies": {
     "@tweenjs/tween.js": "^23.1.1",
     "@types/tweenjs": "^1.0.8",
+    "lil-gui": "^0.19.2",
     "pinia": "^2.1.7",
     "sass": "^1.72.0",
+    "stats.js": "^0.17.0",
     "three": "^0.163.0",
     "vue": "^3.4.21"
   },

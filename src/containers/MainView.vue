@@ -8,20 +8,25 @@ import CarSu7 from '@/three-components/CarSu7.vue'
 import StartRoom from '@/three-components/StartRoom.vue'
 import LoadManager from './LoadManager.vue'
 import CubeCamera from '@/three-components/CubeCamera.vue'
+import StatsDebugger from '@/three-components/StatsDebugger.vue'
+import GUIPlane from '@/components/GUIPlane.vue'
+const isDev = import.meta.env.DEV
 </script>
 <template>
   <div class="main-view">
     <ThreeStage>
+      <StatsDebugger v-if="isDev" />
+      <GUIPlane />
       <LoadManager>
-        <RenderContext :ftp="60">
+        <RenderContext :ftp="300">
           <HelperView />
-          <CubeCamera>
-            <LightManager>
-              <!-- <TestCube /> -->
-              <!-- <StartRoom></StartRoom> -->
-              <CarSu7></CarSu7>
-            </LightManager>
-          </CubeCamera>
+          <!-- <CubeCamera> -->
+          <LightManager>
+            <!-- <TestCube /> -->
+            <!-- <StartRoom></StartRoom> -->
+            <CarSu7></CarSu7>
+          </LightManager>
+          <!-- </CubeCamera> -->
         </RenderContext>
       </LoadManager>
     </ThreeStage>

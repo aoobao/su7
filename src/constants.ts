@@ -32,9 +32,10 @@ export const RES_LIST: IRes[] = [
 
   getResObject('t_car_body_AO.raw.jpg', 'image', PREFIX_TEXTURE_PATH, {
     flipY: false,
+    channel: 1,
     magFilter: NearestFilter,
-    minFilter: NearestFilter
-    // colorSpace: LinearSRGBColorSpace // 3000
+    minFilter: NearestFilter,
+    colorSpace: LinearSRGBColorSpace // 3000
   }),
   getResObject('t_startroom_ao.raw.jpg', 'image', PREFIX_TEXTURE_PATH, {
     flipY: false

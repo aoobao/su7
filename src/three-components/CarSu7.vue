@@ -4,29 +4,29 @@ import { getItem, getItemList } from '../utils/res'
 import { GLTF } from '@/lib/GLTFLoader'
 import { parseGltfModel } from '../utils/model-detail'
 // import { destroyObject3D } from '../lib/three-common'
-import { Texture, MeshStandardMaterial } from 'three'
+import { Texture, MeshStandardMaterial, Color } from 'three'
 useThreeRender(env => {
-  const gltf = getItem<GLTF>('sm_car')
-  if (!gltf) return
+  // console.log(data, env.scene.userData, 'car view')
+  const [sm_car, car_body_ao] = getItemList('sm_car', 't_car_body_AO') as [GLTF, Texture]
+  const data = parseGltfModel(sm_car)
 
-  const data = parseGltfModel(gltf)
+  console.log(data, 'sm_car')
 
-  console.log(data, env.scene.userData, 'car view')
-  const [car_body_ao] = getItemList('t_car_body_AO') as Texture[]
   Object.values(data.materials).forEach(e => {
     const m = e as MeshStandardMaterial
     m.aoMap = car_body_ao
-
-    m.envMap = env.scene.environment
+    // m.envMap = env.scene.environment
   })
-      '
-      /'
+  // const object = sm_car.scene.children[0]
+  // data.materials.
 
-  const object = gltf.scene.children[0]
-  env.scene.add(object)
+  const material = data.materials.Car_body as MeshStandardMaterial
+  material.color = new Color(0x26d6e9)
+
+  env.scene.add(sm_car.scene)
 
   return () => {
-    env.scene.remove(object)
+    env.scene.remove(sm_car.scene)
   }
 })
 </script>
