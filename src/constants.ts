@@ -32,31 +32,35 @@ export const RES_LIST: IRes[] = [
 
   getResObject('t_car_body_AO.raw.jpg', 'image', PREFIX_TEXTURE_PATH, {
     flipY: false,
-    channel: 1,
+    channel: 1, // uv1
     magFilter: NearestFilter,
     minFilter: NearestFilter,
     colorSpace: LinearSRGBColorSpace // 3000
   }),
   getResObject('t_startroom_ao.raw.jpg', 'image', PREFIX_TEXTURE_PATH, {
-    flipY: false
-    // colorSpace: LinearSRGBColorSpace // 3000
+    flipY: false,
+    channel: 1,
+    colorSpace: LinearSRGBColorSpace // 3000
   }),
   getResObject('t_startroom_light.raw.jpg', 'image', PREFIX_TEXTURE_PATH, {
-    flipY: false
-    // colorSpace:SRGBColorSpace
+    flipY: false,
+    colorSpace: SRGBColorSpace,
+    channel: 1
   }),
   getResObject('t_floor_normal.webp', 'image', PREFIX_TEXTURE_PATH, {
     flipY: false,
     wrapS: RepeatWrapping,
-    wrapT: RepeatWrapping
-    // colorSpace: LinearSRGBColorSpace // 3000
+    wrapT: RepeatWrapping,
+    colorSpace: LinearSRGBColorSpace // 3000
   }),
   getResObject('t_floor_roughness.webp', 'image', PREFIX_TEXTURE_PATH, {
     flipY: false,
     wrapS: RepeatWrapping,
-    wrapT: RepeatWrapping
-    // colorSpace: LinearSRGBColorSpace // 3000
+    wrapT: RepeatWrapping,
+    colorSpace: LinearSRGBColorSpace // 3000
   }),
+
+  // TODO
   getResObject('t_street.webp', 'image', PREFIX_TEXTURE_PATH, {
     flipY: false,
     wrapS: RepeatWrapping,

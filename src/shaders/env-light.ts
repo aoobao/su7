@@ -33,7 +33,7 @@ void main() {
       u_envMap0: { value: envMap0 },
       u_envMap1: { value: envMap1 },
       u_weight: { value: 0.5 },
-      u_intensity: { value: 1.0 }
+      u_intensity: { value: 0.5 }
     }
   })
 
