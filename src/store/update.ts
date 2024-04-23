@@ -7,11 +7,15 @@ export const initRenderEvent = defineStore('initRenderEvent', () => {
 
   const [registerAfter, addAfterRender] = createSubscribe<IRenderProps>()
 
+  const [registerResize, addResize] = createSubscribe<{ width: number; height: number; pixelRatio: number }>()
+
   return {
     registerBefore,
     registerAfter,
+    registerResize,
     addBeforeRender,
-    addAfterRender
+    addAfterRender,
+    addResize
   }
 })
 

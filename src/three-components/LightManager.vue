@@ -11,12 +11,6 @@ useThreeRender(env => {
 
   const { state } = useConfig()
 
-  // const light = new AmbientLight(0x404040, 0.1)
-
-  // const directionalLight = new DirectionalLight(0xffffff, 0.8)
-
-  // directionalLight.position.set(0, 30, 0)
-
   const [t_env_light, t_env_night] = getItemList('t_env_light', 't_env_night') as [DataTexture, DataTexture]
 
   const lightEnv = createEnvMapShader(t_env_night, t_env_light, env.renderer)
@@ -34,11 +28,7 @@ useThreeRender(env => {
     lightEnv.update()
   }, -100)
 
-  // env.scene.add(light)
   return () => {
-    // env.scene.remove(light)
-    // destroyObject3D(light)
-
     cancel()
     lightEnv.destroy()
   }

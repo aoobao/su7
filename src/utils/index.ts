@@ -1,5 +1,6 @@
 import { CameraControls } from '@/lib'
 import { PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import { EffectComposer, RenderPass } from 'three/examples/jsm/Addons.js'
 import { onBeforeMount, onMounted, onUnmounted } from 'vue'
 
 export interface IThreeEnvironment {
@@ -8,6 +9,7 @@ export interface IThreeEnvironment {
   renderer: WebGLRenderer
   camera: PerspectiveCamera
   controls: CameraControls
+  composer?: EffectComposer
 }
 
 type Func = () => void
@@ -32,12 +34,16 @@ export const createThreeEnvironment = (dom: HTMLDivElement) => {
 
   const cameraControls = new CameraControls(camera, dom)
 
+  const composer = new EffectComposer(renderer)
+  composer.addPass(new RenderPass(scene, camera))
+
   const env: IThreeEnvironment = {
     dom,
     scene,
     renderer,
     camera,
-    controls: cameraControls
+    controls: cameraControls,
+    composer
   }
 
   return env

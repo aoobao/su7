@@ -15,10 +15,10 @@ const isDev = import.meta.env.DEV
 <template>
   <div class="main-view">
     <ThreeStage>
-      <StatsDebugger v-if="isDev" />
-      <GUIPlane />
       <LoadManager>
-        <RenderContext :ftp="300">
+        <RenderContext :ftp="1000">
+          <StatsDebugger v-if="isDev" />
+          <GUIPlane />
           <HelperView />
           <!-- <CubeCamera> -->
           <LightManager>

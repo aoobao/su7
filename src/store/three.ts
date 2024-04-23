@@ -1,6 +1,7 @@
 import { IThreeEnvironment, createThreeEnvironment, useBeforeMount } from '@/utils'
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
+import { initRenderEvent } from './update'
 
 export const useInitThreeStage = defineStore('initThreeStage', () => {
   // const env = shallowRef<IThreeEnvironment>()
@@ -9,6 +10,8 @@ export const useInitThreeStage = defineStore('initThreeStage', () => {
   let observer: ResizeObserver | undefined
   // const isCreated = computed(() => !!env.value)
   const isCreated = ref(false)
+
+  const { registerResize } = initRenderEvent()
 
   const destroy = () => {
     if (observer) {
@@ -41,10 +44,20 @@ export const useInitThreeStage = defineStore('initThreeStage', () => {
     const resetSize = () => {
       const { clientWidth, clientHeight } = dom
       const pixelRatio = window.devicePixelRatio
+
+      // const width = clientWidth * pixelRatio
+      // const height = clientHeight * pixelRatio
       e.camera.aspect = clientWidth / clientHeight
       e.camera.updateProjectionMatrix()
       e.renderer.setSize(clientWidth, clientHeight)
       e.renderer.setPixelRatio(pixelRatio)
+
+      if (e.composer) {
+        e.composer.setSize(clientWidth, clientHeight)
+        e.composer.setPixelRatio(pixelRatio)
+      }
+
+      registerResize({ width: clientWidth, height: clientHeight, pixelRatio })
     }
 
     observer = new ResizeObserver(resetSize)

@@ -33,7 +33,11 @@ useBeforeMount(() => {
 
     registerBefore({ timer, delta })
 
-    env.renderer.render(env.scene, env.camera)
+    if (env.composer) {
+      env.composer.render()
+    } else {
+      env.renderer.render(env.scene, env.camera)
+    }
 
     registerAfter({ timer, delta })
   }

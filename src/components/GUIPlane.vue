@@ -10,6 +10,9 @@ useBeforeMount(() => {
   envLight.add(state, 'envWeight', 0, 1)
   envLight.add(state, 'envIntensity', 0, 1)
 
+  const car = gui.addFolder('car')
+  car.addColor(state, 'carColor')
+
   return () => {
     envLight.destroy()
   }
