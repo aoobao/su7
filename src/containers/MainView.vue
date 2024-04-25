@@ -23,7 +23,7 @@ const isDev = import.meta.env.DEV
           <!-- <CubeCamera> -->
           <LightManager>
             <!-- <TestCube /> -->
-            <!-- <StartRoom></StartRoom> -->
+            <StartRoom></StartRoom>
             <CarSu7></CarSu7>
           </LightManager>
           <!-- </CubeCamera> -->

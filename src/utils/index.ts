@@ -34,8 +34,8 @@ export const createThreeEnvironment = (dom: HTMLDivElement) => {
 
   const cameraControls = new CameraControls(camera, dom)
 
-  const composer = new EffectComposer(renderer)
-  composer.addPass(new RenderPass(scene, camera))
+  // const composer = new EffectComposer(renderer)
+  // composer.addPass(new RenderPass(scene, camera))
 
   const env: IThreeEnvironment = {
     dom,
@@ -43,7 +43,7 @@ export const createThreeEnvironment = (dom: HTMLDivElement) => {
     renderer,
     camera,
     controls: cameraControls,
-    composer
+    // composer
   }
 
   return env

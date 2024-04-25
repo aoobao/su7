@@ -3,21 +3,47 @@ import { useBeforeMount } from '../utils/index'
 import { getThreeEnv } from '../store/three'
 import { getItem, getItemList } from '../utils/res'
 import { GLTF } from '../lib/GLTFLoader'
+import { Texture, MeshStandardMaterial, Color } from 'three'
+import { parseGltfModel } from '@/utils/model-detail'
+import { BLOOM_LAYER } from '@/effect-compose'
 // import { destroyObject3D } from '../lib/three-common'
 const env = getThreeEnv()
 
 useBeforeMount(() => {
-  const gltf = getItem<GLTF>('sm_startroom')
-  if (!gltf) return
+  // const gltf = getItem<GLTF>('sm_startroom')
+  // if (!gltf) return
 
-  const resList = getItemList('t_startroom_ao', 't_startroom_light', 't_floor_normal', 't_floor_roughness')
+  const [sm_startroom, t_startroom_ao, t_startroom_light, t_floor_normal, t_floor_roughness] = getItemList('sm_startroom', 't_startroom_ao', 't_startroom_light', 't_floor_normal', 't_floor_roughness') as [GLTF, Texture, Texture, Texture, Texture]
 
-  console.log(gltf, resList)
+  const data = parseGltfModel(sm_startroom)
 
-  env.scene.add(gltf.scene)
+  Object.values(data.materials).forEach(m => {
+    const material = m as MeshStandardMaterial
+
+    material.aoMap = t_startroom_ao
+    material.lightMap = t_startroom_light
+    material.normalMap = t_floor_normal
+    material.roughnessMap = t_floor_roughness
+    material.envMapIntensity = 0
+  })
+
+  console.log(data, 'startroom')
+
+  const light = data.materials.light as MeshStandardMaterial
+  light.emissive = new Color(0xffffff)
+  // light.emissiveIntensity = 1
+  light.depthWrite = false
+  light.transparent = true
+
+  const lightMesh = data.meshes.find(t => t.name === 'light001')!
+
+  lightMesh.layers.disableAll()
+  lightMesh.layers.enable(BLOOM_LAYER)
+
+  env.scene.add(sm_startroom.scene)
 
   return () => {
-    env.scene.remove(gltf.scene)
+    env.scene.remove(sm_startroom.scene)
   }
 })
 </script>

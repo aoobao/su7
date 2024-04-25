@@ -25,6 +25,8 @@ export const useInitThreeStage = defineStore('initThreeStage', () => {
       e.controls.dispose()
       e.renderer.dispose()
 
+      e.composer?.dispose()
+
       env = undefined
     }
     isCreated.value = false

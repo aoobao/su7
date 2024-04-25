@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { useBeforeMount } from '@/utils'
-import { getThreeEnv } from '@/store/three'
+import { getThreeEnv, useThreeRender } from '@/store/three'
 import { initRenderEvent } from '@/store/update'
 import { Clock } from 'three'
 import { update } from '@tweenjs/tween.js'
 import { createSubscribe } from '@/utils/subscribe'
 import { IRenderProps } from '@/types'
+import { initEffectCompose } from '../effect-compose/index'
 const props = defineProps({
   ftp: { type: Number, default: 60 }
 })
 
 const { registerBefore, registerAfter } = initRenderEvent()
 
-useBeforeMount(() => {
-  // console.log('render init')
-  const env = getThreeEnv()
+useThreeRender(env => {
+  const composerEnv = initEffectCompose(env)
+
   let tick = 0
   let lastTime = 0
   const clock = new Clock()
@@ -33,11 +34,12 @@ useBeforeMount(() => {
 
     registerBefore({ timer, delta })
 
-    if (env.composer) {
-      env.composer.render()
-    } else {
-      env.renderer.render(env.scene, env.camera)
-    }
+    // if (env.composer) {
+    //   env.composer.render()
+    // } else {
+    //   env.renderer.render(env.scene, env.camera)
+    // }
+    composerEnv.render()
 
     registerAfter({ timer, delta })
   }
