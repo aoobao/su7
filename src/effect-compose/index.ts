@@ -1,7 +1,7 @@
 import { useConfig } from '@/store/config'
 import { IThreeEnvironment } from '@/utils'
 import { ShaderMaterial, Texture, Vector2 } from 'three'
-import { EffectComposer, OutputPass, RenderPass, ShaderPass, UnrealBloomPass } from 'three/examples/jsm/Addons.js'
+import { EffectComposer, OutputPass, RenderPass, SMAAPass, ShaderPass, UnrealBloomPass } from 'three/examples/jsm/Addons.js'
 import { uniforms } from 'three/examples/jsm/nodes/Nodes.js'
 import { watchEffect } from 'vue'
 
@@ -9,19 +9,22 @@ export const BLOOM_LAYER = 10
 
 export const initEffectCompose = (env: IThreeEnvironment) => {
   const { clientWidth, clientHeight } = env.dom
+  const pixelRatio = env.renderer.getPixelRatio()
+
+  const width = clientWidth * pixelRatio
+  const height = clientHeight * pixelRatio
   const renderPass = new RenderPass(env.scene, env.camera)
 
   const bloomComposer = new EffectComposer(env.renderer)
-  const bloomPass = new UnrealBloomPass(new Vector2(clientWidth, clientHeight), 0.3, 0.3, 0.3)
+  const bloomPass = new UnrealBloomPass(new Vector2(width, height), 0.3, 0.3, 0.1)
   bloomComposer.renderToScreen = false
   bloomComposer.addPass(renderPass)
   bloomComposer.addPass(bloomPass)
 
-  const { state } = useConfig()
+  const store = useConfig()
   watchEffect(() => {
-    bloomPass.strength = state.strength
-    bloomPass.threshold = state.threshold
-    bloomPass.radius = state.radius
+    // console.log(store.lightStrength, 'strength')
+    bloomPass.strength = store.lightStrength
   })
 
   const composer = new EffectComposer(env.renderer)
@@ -30,6 +33,9 @@ export const initEffectCompose = (env: IThreeEnvironment) => {
   const mixPass = createMixPass(bloomComposer.renderTarget2.texture)
   composer.addPass(mixPass)
   // composer.addPass(bloomPass)
+
+  const smaaPass = new SMAAPass(width, height)
+  composer.addPass(smaaPass)
 
   const outPutPass = new OutputPass()
   composer.addPass(outPutPass)

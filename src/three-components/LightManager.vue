@@ -9,15 +9,15 @@ import { watchEffect } from 'vue'
 useThreeRender(env => {
   const beforeRender = useBeforeRender()
 
-  const { state } = useConfig()
+  const config = useConfig()
 
   const [t_env_light, t_env_night] = getItemList('t_env_light', 't_env_night') as [DataTexture, DataTexture]
 
   const lightEnv = createEnvMapShader(t_env_night, t_env_light, env.renderer)
 
   watchEffect(() => {
-    const weight = state.envWeight
-    const intensity = state.envIntensity
+    const weight = config.envWeight
+    const intensity = config.envIntensity
 
     lightEnv.setState(weight, intensity)
   })

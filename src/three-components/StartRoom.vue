@@ -6,6 +6,8 @@ import { GLTF } from '../lib/GLTFLoader'
 import { Texture, MeshStandardMaterial, Color } from 'three'
 import { parseGltfModel } from '@/utils/model-detail'
 import { BLOOM_LAYER } from '@/effect-compose'
+import { useConfig } from '@/store/config'
+import { watchEffect } from 'vue'
 // import { destroyObject3D } from '../lib/three-common'
 const env = getThreeEnv()
 
@@ -34,6 +36,16 @@ useBeforeMount(() => {
   light.emissiveIntensity = 1
   light.depthWrite = false
   light.transparent = true
+
+  const config = useConfig()
+
+  watchEffect(() => {
+    const colorValue = config.lightColor
+
+    light.emissive.r = colorValue
+    light.emissive.g = colorValue
+    light.emissive.b = colorValue
+  })
 
   const lightMesh = data.meshes.find(t => t.name === 'light001')!
 

@@ -7,7 +7,7 @@ import { parseGltfModel } from '../utils/model-detail'
 import { Texture, MeshStandardMaterial, Color } from 'three'
 import { useConfig } from '@/store/config'
 import { watchEffect } from 'vue'
-const { state } = useConfig()
+const config = useConfig()
 
 useThreeRender(env => {
   // console.log(data, env.scene.userData, 'car view')
@@ -25,7 +25,7 @@ useThreeRender(env => {
   const material = data.materials.Car_body as MeshStandardMaterial
 
   watchEffect(() => {
-    material.color = new Color(state.carColor.r, state.carColor.g, state.carColor.b)
+    material.color = new Color(config.carColor.r, config.carColor.g, config.carColor.b)
   })
   // material.color = new Color(38, 214, 233)
 
