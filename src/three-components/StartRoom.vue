@@ -27,11 +27,11 @@ useBeforeMount(() => {
     material.envMapIntensity = 0
   })
 
-  console.log(data, 'startroom')
+  // console.log(data, 'startroom')
 
   const light = data.materials.light as MeshStandardMaterial
   light.emissive = new Color(0xffffff)
-  // light.emissiveIntensity = 1
+  light.emissiveIntensity = 1
   light.depthWrite = false
   light.transparent = true
 

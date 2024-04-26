@@ -13,6 +13,11 @@ useBeforeMount(() => {
   const car = gui.addFolder('car')
   car.addColor(state, 'carColor')
 
+  const test = gui.addFolder('test')
+  test.add(state, 'strength', 0, 1)
+  test.add(state, 'radius', 0, 1)
+  test.add(state, 'threshold', 0, 1)
+
   return () => {
     envLight.destroy()
   }
