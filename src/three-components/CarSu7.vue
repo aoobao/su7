@@ -7,6 +7,7 @@ import { parseGltfModel } from '../utils/model-detail'
 import { Texture, MeshStandardMaterial, Color } from 'three'
 import { useConfig } from '@/store/config'
 import { watchEffect } from 'vue'
+import { REFLECT_LAYER } from '@/constants'
 const config = useConfig()
 
 useThreeRender(env => {
@@ -15,6 +16,10 @@ useThreeRender(env => {
   const data = parseGltfModel(sm_car)
 
   console.log(data, 'sm_car')
+
+  data.meshes.forEach(m => {
+    m.layers.enable(REFLECT_LAYER)
+  })
 
   Object.values(data.materials).forEach(e => {
     const m = e as MeshStandardMaterial

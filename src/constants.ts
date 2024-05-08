@@ -95,3 +95,6 @@ function getResObject(fileName: string, type: IFileType = 'gltf', prefix = PREFI
 
   return res
 }
+
+
+export const REFLECT_LAYER = 29

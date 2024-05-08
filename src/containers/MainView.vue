@@ -20,13 +20,11 @@ const isDev = import.meta.env.DEV
           <StatsDebugger v-if="isDev" />
           <GUIPlane />
           <HelperView />
-          <!-- <CubeCamera> -->
           <LightManager>
             <!-- <TestCube /> -->
             <StartRoom></StartRoom>
             <CarSu7></CarSu7>
           </LightManager>
-          <!-- </CubeCamera> -->
         </RenderContext>
       </LoadManager>
     </ThreeStage>
