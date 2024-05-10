@@ -30,7 +30,7 @@ useThreeRender(env => {
 
     env.controls.update(delta)
 
-    update(delta) // tween.js
+    update(timer) // tween.js
 
     registerBefore({ timer, delta })
 

@@ -13,6 +13,9 @@ useBeforeMount(() => {
   const car = gui.addFolder('car')
   car.addColor(config, 'carColor')
 
+  const action = gui.addFolder('action')
+  action.add(config, 'speedUp')
+
   // const test = gui.addFolder('test')
   // test.add(state, 'strength', 0, 1)
   // test.add(state, 'radius', 0, 1)
