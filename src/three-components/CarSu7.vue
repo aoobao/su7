@@ -8,6 +8,7 @@ import { Texture, MeshStandardMaterial, Color } from 'three'
 import { useConfig } from '@/store/config'
 import { watchEffect } from 'vue'
 import { REFLECT_LAYER } from '@/constants'
+import { updateCarBounding, updateCarMaterial } from '../utils/car'
 const config = useConfig()
 
 useThreeRender(env => {
@@ -15,7 +16,7 @@ useThreeRender(env => {
   const [sm_car, car_body_ao] = getItemList('sm_car', 't_car_body_AO') as [GLTF, Texture]
   const data = parseGltfModel(sm_car)
 
-  console.log(data, 'sm_car')
+  // console.log(data, 'sm_car')
 
   data.meshes.forEach(m => {
     m.layers.enable(REFLECT_LAYER)
@@ -24,8 +25,12 @@ useThreeRender(env => {
   Object.values(data.materials).forEach(e => {
     const m = e as MeshStandardMaterial
     m.aoMap = car_body_ao
+
+    updateCarMaterial(m)
     // m.envMap = env.scene.environment
   })
+
+  updateCarBounding(sm_car.scene)
 
   const material = data.materials.Car_body as MeshStandardMaterial
 

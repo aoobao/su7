@@ -23,10 +23,12 @@ const isDev = import.meta.env.DEV
           <HelperView />
           <LightManager>
             <!-- <TestCube /> -->
-            <StartRoom></StartRoom>
-            <CarSu7>
-              <SpeedUp />
-            </CarSu7>
+            <CubeCamera>
+              <StartRoom></StartRoom>
+              <CarSu7>
+                <SpeedUp />
+              </CarSu7>
+            </CubeCamera>
           </LightManager>
         </RenderContext>
       </LoadManager>

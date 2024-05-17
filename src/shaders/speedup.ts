@@ -1,6 +1,6 @@
 import { ShaderMaterial } from 'three'
 
-const noiseFunc = `
+export const noiseFunc = `
 vec2 hash( vec2 p ) {
   p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
   return -1.0 + 2.0*fract(sin(p)*43758.5453123);
@@ -123,7 +123,7 @@ export const createSpeedUpMaterial = () => {
   const material = new ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
-      uSpeed: { value: 5 }
+      uSpeed: { value: 0 }
     },
     vertexShader,
     fragmentShader,

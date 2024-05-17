@@ -20,31 +20,3 @@ export const useConfig = defineStore('config', {
     }
   }
 })
-
-// () => {
-//   const state = reactive({
-//     envWeight: 1, // 0:night->1:light
-//     envIntensity: 0.5, // 强度[0,1]
-//     carColor: { r: 38 / 255, g: 214 / 255, b: 233 / 255 }
-//     // strength: 0.3,
-//     // radius: 0.3,
-//     // threshold: 0.3
-//   })
-
-//   const computedState = computed(() => {
-//     const color = state.envWeight
-//     const strength = Math.max(Math.pow(state.envIntensity, 2) * 0.8, 0.4)
-
-//     console.log(color, strength, 'computed')
-
-//     return {
-//       lightColor: color,
-//       lightStrength: strength
-//     }
-//   })
-
-//   return {
-//     state,
-//     computedState
-//   }
-// }

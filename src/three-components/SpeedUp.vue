@@ -5,7 +5,7 @@ import { useBeforeRender } from '../store/update'
 import { GLTF } from '../lib/GLTFLoader'
 import { parseGltfModel } from '@/utils/model-detail'
 import { createSpeedUpMaterial } from '../shaders/speedup'
-import { REFLECT_LAYER } from '@/constants'
+import { ENVIRONMENT_LAYER, REFLECT_LAYER } from '@/constants'
 import { MathUtils } from 'three'
 import { watchEffect } from 'vue'
 import { useConfig } from '@/store/config'
@@ -23,6 +23,7 @@ useThreeRender(env => {
   data.meshes.forEach(mesh => {
     mesh.material = material
     mesh.layers.enable(REFLECT_LAYER)
+    mesh.layers.enable(ENVIRONMENT_LAYER)
   })
 
   speedUp.scene.visible = false
@@ -58,7 +59,6 @@ useThreeRender(env => {
     // console.log(delta)
 
     // speedUp.scene.opacity = state.speed
-
 
     if (state.speed > 0.1) {
       speedUp.scene.visible = true
