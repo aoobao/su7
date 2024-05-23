@@ -14,7 +14,9 @@ useBeforeMount(() => {
   car.addColor(config, 'carColor')
 
   const action = gui.addFolder('action')
-  action.add(config, 'speedUp')
+  action.add(config, 'showSpeedUp')
+
+  action.add(config, 'showCurvature')
 
   // const test = gui.addFolder('test')
   // test.add(state, 'strength', 0, 1)

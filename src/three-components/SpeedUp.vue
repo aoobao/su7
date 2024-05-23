@@ -40,7 +40,7 @@ useThreeRender(env => {
   let tween: Tween<{ speed: number }> | undefined
 
   watchEffect(() => {
-    const start = config.speedUp
+    const start = config.showSpeedUp
 
     if (tween) {
       tween.stop()
