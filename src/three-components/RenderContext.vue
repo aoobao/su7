@@ -7,6 +7,7 @@ import { update } from '@tweenjs/tween.js'
 import { createSubscribe } from '@/utils/subscribe'
 import { IRenderProps } from '@/types'
 import { initEffectCompose } from '../effect-compose/index'
+import { global } from '../store/global'
 const props = defineProps({
   ftp: { type: Number, default: 60 }
 })
@@ -31,6 +32,8 @@ useThreeRender(env => {
     env.controls.update(delta)
 
     update(timer) // tween.js
+
+    global.uTime.value = timer / 1000
 
     registerBefore({ timer, delta })
 

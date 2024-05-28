@@ -1,7 +1,6 @@
 import { IRenderProps } from '@/types'
 import { createSubscribe } from '@/utils/subscribe'
 import { defineStore } from 'pinia'
-
 export const initRenderEvent = defineStore('initRenderEvent', () => {
   const [registerBefore, addBeforeRender] = createSubscribe<IRenderProps>()
 

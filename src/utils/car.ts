@@ -158,8 +158,8 @@ export const updateCarMaterial = (material: MeshStandardMaterial) => {
     shader.uniforms.cubeCaptureReflectMap = { value: global.cubeRenderTarget.value?.texture }
     // TODO
     shader.uniforms.blurCaptureReflectMap = { value: null }
-    shader.uniforms.vEnvMapIntensity = { value: 1 }
-    shader.uniforms.vDiscardOpacity = { value: 1 }
+    shader.uniforms.vEnvMapIntensity = global.uEnvMapIntensity
+    shader.uniforms.vDiscardOpacity = global.uDiscardOpacity
 
     shader.uniforms.probeBoxMax = global.probeBoxMax
     shader.uniforms.probeBoxMin = global.probeBoxMin

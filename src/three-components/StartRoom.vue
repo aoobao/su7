@@ -51,8 +51,7 @@ useThreeRender(env => {
 
   const lightMesh = data.meshes.find(t => t.name === 'light001')!
 
-  lightMesh.layers.disableAll()
-  lightMesh.layers.enable(BLOOM_LAYER)
+  lightMesh.layers.set(BLOOM_LAYER)
 
   env.scene.add(sm_startroom.scene)
 
@@ -66,6 +65,13 @@ useThreeRender(env => {
   const floor = data.meshes.find(t => t.name === 'ReflecFloor')
   if (floor) {
     updateFloorMaterial(floor, d.renderTarget, d.reflectMatrix)
+    watchEffect(() => {
+      if (config.showWindSpeed) {
+        floor.visible = false
+      } else {
+        floor.visible = true
+      }
+    })
   }
 
   return () => {
@@ -296,7 +302,7 @@ function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, refle
     defines.USE_NORMAL_MAP = true
   }
 
-  console.log(material, 'floor material', uniforms)
+  // console.log(material, 'floor material', uniforms)
 
   const shader = new ShaderMaterial({
     uniforms,

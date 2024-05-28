@@ -12,6 +12,8 @@ import StatsDebugger from '@/three-components/StatsDebugger.vue'
 import GUIPlane from '@/components/GUIPlane.vue'
 import SpeedUp from '@/three-components/SpeedUp.vue'
 import Curvature from '@/three-components/Curvature.vue'
+import UIPlane from '@/components/UIPlane.vue'
+import WindSpeed from '@/three-components/WindSpeed.vue'
 const isDev = import.meta.env.DEV
 </script>
 <template>
@@ -20,7 +22,7 @@ const isDev = import.meta.env.DEV
       <LoadManager>
         <RenderContext :ftp="1000">
           <StatsDebugger v-if="isDev" />
-          <GUIPlane />
+          <!-- <GUIPlane /> -->
           <HelperView />
           <LightManager>
             <!-- <TestCube /> -->
@@ -29,18 +31,23 @@ const isDev = import.meta.env.DEV
               <CarSu7>
                 <SpeedUp />
                 <Curvature />
+                <WindSpeed />
               </CarSu7>
             </CubeCamera>
           </LightManager>
         </RenderContext>
       </LoadManager>
     </ThreeStage>
+
+    <UIPlane />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .main-view {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 </style>

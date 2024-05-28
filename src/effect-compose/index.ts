@@ -49,8 +49,7 @@ export const initEffectCompose = (env: IThreeEnvironment) => {
       const layers = env.camera.layers
       const mask = layers.mask
 
-      layers.disableAll()
-      layers.enable(BLOOM_LAYER)
+      layers.set(BLOOM_LAYER)
 
       bloomComposer.render()
       layers.mask = mask

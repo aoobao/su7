@@ -12,5 +12,14 @@ export const global = {
   },
   probePos: {
     value: new Vector4(0, 0, 0, 1)
+  },
+  uTime: {
+    value: 0
+  },
+  uEnvMapIntensity: {
+    value: 1
+  },
+  uDiscardOpacity: {
+    value: 1
   }
 }
