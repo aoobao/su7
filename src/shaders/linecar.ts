@@ -4,6 +4,7 @@ import { DoubleSide, ShaderMaterial, Vector4 } from 'three'
 import { noiseFunc } from './speedup'
 import { LineMaterial } from 'three/examples/jsm/Addons.js'
 import { global } from '@/store/global'
+import { REFLECT_LAYER } from '@/constants'
 
 export const initLineCar = (gltf: GLTF) => {
   const data = parseGltfModel(gltf)
@@ -11,6 +12,8 @@ export const initLineCar = (gltf: GLTF) => {
   const material = getMaterial()
   data.meshes.forEach(mesh => {
     mesh.material = material
+
+    mesh.layers.enable(REFLECT_LAYER)
   })
 
   return {
