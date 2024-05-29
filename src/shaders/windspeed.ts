@@ -14,7 +14,7 @@ export const initWindSpeed = (gltf: GLTF, lineTexture: Texture) => {
 
   mesh.material = material
 
-  mesh.layers.enable(REFLECT_LAYER)
+  // mesh.layers.enable(REFLECT_LAYER)
   mesh.layers.enable(ENVIRONMENT_LAYER)
 
   return {

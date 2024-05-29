@@ -10,6 +10,7 @@ import { watchEffect } from 'vue'
 import { useBeforeRender } from '@/store/update'
 import { getReflectMaterial } from '@/hooks/useReflect'
 import { REFLECT_LAYER } from '@/constants'
+import { changeDefines } from '../shaders/index'
 // import { destroyObject3D } from '../lib/three-common'
 const beforeRender = useBeforeRender()
 
@@ -64,13 +65,16 @@ useThreeRender(env => {
 
   const floor = data.meshes.find(t => t.name === 'ReflecFloor')
   if (floor) {
-    updateFloorMaterial(floor, d.renderTarget, d.reflectMatrix)
+    const floorMaterial = updateFloorMaterial(floor, d.renderTarget, d.reflectMatrix)
     watchEffect(() => {
-      if (config.showWindSpeed) {
-        floor.visible = false
-      } else {
-        floor.visible = true
-      }
+      // if (config.showWindSpeed) {
+      //   // floor.visible = false
+      //   changeDefines(floorMaterial, 'USE_FLOOR_MAP', false)
+      // } else {
+
+      // }
+
+      changeDefines(floorMaterial, 'USE_FLOOR_MAP', !config.showWindSpeed)
     })
   }
 
@@ -215,26 +219,32 @@ function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, refle
         lightSample*=aoSample;
       #endif
   
-          vec3 streetCol = texture(ut_street,vec2((vWorldPosition.z+15.)/30.,(vWorldPosition.x+u_floorUVOffset.x)/60.)).rgb;
-          lightSample = mix(lightSample,streetCol,vec3(u_floor_typeSwitch));
-  
-          vec3 colorFactory = color;
-          #ifdef USE_MAP
-              vec3 mapColor = texture2D(map, vUv);
-              colorFactory *= mapColor.rgb;
-          #endif
-  
-          //漫反射强度的简单计算方式
-          diffuseLight = lightSample * colorFactory; //* theta;
-          vec3 outColor = mix(diffuseLight, reflectionSample, reflectance);
-  
-          gl_FragColor = vec4(outColor, opacity);
-          // gl_FragColor = vec4(vec3(theta*(roughness_factory)), 1.);
-          // gl_FragColor = vec4(vec3(texture2D(lightMap,vUv2).rgb), 1.);
-          #include <tonemapping_fragment>
-          #include <colorspace_fragment>
-          #include <fog_fragment>
-      }
+      vec3 streetCol = texture(ut_street,vec2((vWorldPosition.z+15.)/30.,(vWorldPosition.x+u_floorUVOffset.x)/60.)).rgb;
+      lightSample = mix(lightSample,streetCol,vec3(u_floor_typeSwitch));
+
+      vec3 colorFactory = color;
+      #ifdef USE_MAP
+          vec3 mapColor = texture2D(map, vUv);
+          colorFactory *= mapColor.rgb;
+      #endif
+
+      #ifdef USE_FLOOR_MAP
+      //漫反射强度的简单计算方式
+      diffuseLight = lightSample * colorFactory; //* theta;
+      vec3 outColor = mix(diffuseLight, reflectionSample, reflectance);
+
+      gl_FragColor = vec4(outColor, opacity);
+      #else
+      gl_FragColor = vec4(reflectionSample, opacity*0.4);
+      #endif
+
+      
+      // gl_FragColor = vec4(vec3(theta*(roughness_factory)), 1.);
+      // gl_FragColor = vec4(vec3(texture2D(lightMap,vUv2).rgb), 1.);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+      #include <fog_fragment>
+    }
   `
   const uniforms: { [uniform: string]: IUniform } = {
     color: { value: new Color() },
@@ -262,7 +272,9 @@ function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, refle
     u_reflectMatrix: { value: reflectMatrix },
     u_reflectTexture: { value: renderTarget.texture }
   }
-  const defines: { [key: string]: any } = {}
+  const defines: { [key: string]: any } = {
+    USE_FLOOR_MAP: true
+  }
   const material = floor.material as MeshStandardMaterial
 
   uniforms.color.value = material.color
@@ -317,7 +329,9 @@ function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, refle
   // ignoreReflectMesh.push(floor)
   floor.material = shader
 
-  console.log('reflect floor ', floor)
+  // console.log('reflect floor ', floor)
+
+  return shader
 }
 </script>
 <template>
