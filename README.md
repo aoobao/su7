@@ -8,5 +8,6 @@ This template should help get you started developing with Vue 3 and TypeScript i
 
 - Use [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc) for performing the same type checking from the command line, or for generating d.ts files for SFCs.
 
-
 # study from gamemcu.com
+
+原版地址: [https://gamemcu.com/su7/](https://gamemcu.com/su7/)
