@@ -22,6 +22,11 @@ const state = config.$state
       <el-form-item label="showWindSpeed">
         <el-checkbox v-model="state.showWindSpeed"></el-checkbox>
       </el-form-item>
+
+      <el-form-item label="showCarRadar">
+        <el-checkbox v-model="state.showCarRadar"></el-checkbox>
+      </el-form-item>
+
       <el-form-item label="carColor">
         <el-color-picker v-model="state.color" color-format="rgb"></el-color-picker>
       </el-form-item>

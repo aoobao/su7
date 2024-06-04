@@ -14,6 +14,7 @@ import SpeedUp from '@/three-components/SpeedUp.vue'
 import Curvature from '@/three-components/Curvature.vue'
 import UIPlane from '@/components/UIPlane.vue'
 import WindSpeed from '@/three-components/WindSpeed.vue'
+import CarRadar from '@/three-components/CarRadar.vue'
 const isDev = import.meta.env.DEV
 </script>
 <template>
@@ -32,6 +33,7 @@ const isDev = import.meta.env.DEV
                 <SpeedUp />
                 <Curvature />
                 <WindSpeed />
+                <CarRadar />
               </CarSu7>
             </CubeCamera>
           </LightManager>

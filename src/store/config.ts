@@ -10,6 +10,7 @@ export const useConfig = defineStore('config', {
       showSpeedUp: false,
       showCurvature: false,
       showWindSpeed: false,
+      showCarRadar: false,
       color: 'rgb(38,214,233)'
     }
   },

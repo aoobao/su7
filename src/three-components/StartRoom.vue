@@ -18,7 +18,7 @@ useThreeRender(env => {
   // const gltf = getItem<GLTF>('sm_startroom')
   // if (!gltf) return
 
-  const [sm_startroom, t_startroom_ao, t_startroom_light, t_floor_normal, t_floor_roughness] = getItemList('sm_startroom', 't_startroom_ao', 't_startroom_light', 't_floor_normal', 't_floor_roughness') as [GLTF, Texture, Texture, Texture, Texture]
+  const [sm_startroom, t_startroom_ao, t_startroom_light, t_floor_normal, t_floor_roughness, t_street] = getItemList('sm_startroom', 't_startroom_ao', 't_startroom_light', 't_floor_normal', 't_floor_roughness', 't_street') as [GLTF, Texture, Texture, Texture, Texture, Texture]
 
   const data = parseGltfModel(sm_startroom)
 
@@ -50,6 +50,14 @@ useThreeRender(env => {
     light.emissive.b = colorValue
   })
 
+  watchEffect(() => {
+    if (config.showSpeedUp || config.showCurvature || config.showWindSpeed || config.showCarRadar) {
+      light.visible = false
+    } else {
+      light.visible = true
+    }
+  })
+
   const lightMesh = data.meshes.find(t => t.name === 'light001')!
 
   lightMesh.layers.set(BLOOM_LAYER)
@@ -59,13 +67,15 @@ useThreeRender(env => {
   // reflect
   const d = getReflectMaterial(env)
 
-  const cancel = beforeRender(() => {
-    d.update()
-  })
+  const cancels = [
+    beforeRender(() => {
+      d.update()
+    })
+  ]
 
   const floor = data.meshes.find(t => t.name === 'ReflecFloor')
   if (floor) {
-    const floorMaterial = updateFloorMaterial(floor, d.renderTarget, d.reflectMatrix)
+    const floorMaterial = updateFloorMaterial(floor, d.renderTarget, d.reflectMatrix, t_street)
     watchEffect(() => {
       // if (config.showWindSpeed) {
       //   // floor.visible = false
@@ -75,17 +85,29 @@ useThreeRender(env => {
       // }
 
       changeDefines(floorMaterial, 'USE_FLOOR_MAP', !config.showWindSpeed)
+
+      floorMaterial.uniforms.u_floor_typeSwitch.value = config.showCarRadar ? 1 : 0
     })
+
+    cancels.push(
+      beforeRender(opt => {
+        if (!config.showCarRadar) return
+
+        const uv = floorMaterial.uniforms.u_floorUVOffset.value as Vector2
+
+        uv.x += opt.delta * 10
+      })
+    )
   }
 
   return () => {
+    cancels.forEach(cancel => cancel())
     env.scene.remove(sm_startroom.scene)
-    cancel()
     d.destroy()
   }
 })
 
-function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, reflectMatrix: Matrix4) {
+function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, reflectMatrix: Matrix4, streetMap: Texture) {
   const vertexShader = `
   varying vec4 vWorldPosition;
       varying vec2 vUv;
@@ -265,7 +287,7 @@ function updateFloorMaterial(floor: Mesh, renderTarget: WebGLRenderTarget, refle
     u_lightIntensity: { value: 1 },
     u_reflectIntensity: { value: 1 },
     u_floor_typeSwitch: { value: 0 },
-    ut_street: { value: null },
+    ut_street: { value: streetMap },
     u_floorUVOffset: { value: new Vector2() },
     ...UniformsLib.fog,
     ...UniformsLib.lights,
