@@ -48,11 +48,9 @@ useThreeRender(env => {
   })
 
   watchEffect(() => {
-    if (config.showCarRadar) {
-      sm_carradar.scene.visible = true
-      car1.visible = true
-      car2.visible = true
-    }
+    sm_carradar.scene.visible = config.showCarRadar
+    car1.visible = config.showCarRadar
+    car2.visible = config.showCarRadar
   })
 
   return () => {
